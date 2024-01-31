@@ -51,10 +51,13 @@ const signup = () => {
         />
       </div>
 
-      <button className="p-2 border-none rounded-md bg-blue-500 text-white   focus:outline-none  mb-3"  onClick={Signup}>
+      <button
+        className="p-2 border-none rounded-md bg-blue-500 text-white   focus:outline-none  mb-3"
+        onClick={Signup}
+      >
         Sign up
       </button>
-      <Link  href="/login">Visit login page</Link>
+      <Link href="/login">Visit login page</Link>
     </div>
   );
 };

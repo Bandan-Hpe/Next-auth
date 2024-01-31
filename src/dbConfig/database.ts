@@ -9,10 +9,10 @@ export async function Connect() {
     connection.on("connected", () => {
       console.log("mongodb connected successfully");
     });
-    connection.on('error', (err) => {
-        console.log('mongodb connection error' + err);
-        process.exit();
-    })
+    connection.on("error", (err) => {
+      console.log("mongodb connection error" + err);
+      process.exit();
+    });
   } catch (error) {
     console.log("something went wrong");
     console.log(error);
