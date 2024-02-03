@@ -1,17 +1,42 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const signup = () => {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
-    username: " ",
+    username: "",
   });
 
-  const Signup = () => {};
+  const [buttondissabled, setbuttondissabled] = useState(false);
+
+  const Signup = async () => {
+    try {
+      const response= await axios.post("/api/users/signup", user);
+      console.log("signup success",response.data);
+      router.push("/login")
+    } catch (error: any) {
+      console.log("signup failed ", error.message);
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      user.email.length > 0 &&
+      user.password.length > 0 &&
+      user.username.length > 0
+    ) {
+      setbuttondissabled(false);
+    } else {
+      setbuttondissabled(true);
+    }
+  }, [user]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
@@ -55,7 +80,7 @@ const signup = () => {
         className="p-2 border-none rounded-md bg-blue-500 text-white   focus:outline-none  mb-3"
         onClick={Signup}
       >
-        Sign up
+        {buttondissabled ? "NO signup" : "Signup"}
       </button>
       <Link href="/login">Visit login page</Link>
     </div>

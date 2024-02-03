@@ -3,6 +3,9 @@ import User from "@/models/Usermodel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 export async function POST(request: NextRequest) {
+
+  await Connect();
+
   try {
     const reqBody = await request.json();
 
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
       );
     }
     // check password
-    const salt = await bcrypt.gensalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashpasword = await bcrypt.hash(password, salt);
 
     // create a new user
@@ -33,8 +36,8 @@ export async function POST(request: NextRequest) {
       saveUser,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.log(error,"Error saving user")
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }
 
-Connect();
