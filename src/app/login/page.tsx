@@ -1,22 +1,44 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const Login = () => {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const onLogin = () => {};
+  const [buttondisabled, setbuttondisabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const onLogin = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/users/login", user);
+      console.log(response);
+      router.push("/profile")
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (user.email.length > 0 && user.password.length > 0) {
+      setbuttondisabled(false);
+    } else {
+      setbuttondisabled(true);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
       <h1>Sign Up</h1>
       <hr />
-     
+
       <div className="flex space-x-12  align-center">
         <label htmlFor="Email">Email :</label>
         <input
@@ -40,9 +62,15 @@ const Login = () => {
         />
       </div>
 
-      <button className="p-2 border-none rounded-md bg-blue-500 text-white   focus:outline-none  mb-3"  onClick={onLogin}>
-Login here      </button>
-      <Link  href="/signup">Visit sign up page</Link>
+      <button
+        className="p-2 border-none rounded-md bg-blue-500 text-white   focus:outline-none  mb-3"
+        onClick={onLogin}
+      >
+
+        {buttondisabled ? "disabled" : "login"}
+      
+      </button>
+      <Link href="/signup">Visit sign up page</Link>
     </div>
   );
 };
